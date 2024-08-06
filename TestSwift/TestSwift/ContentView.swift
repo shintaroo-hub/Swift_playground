@@ -9,13 +9,23 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
     @State var showingAlert = false
+    @State private var path = NavigationPath()
     
     var body: some View{
-        NavigationStack{
-            MainPage.init(isShowing: false)
+        NavigationStack(path: $path){
+            MainPage.init(isShowing: false,
+                  onClick:
+                    {
+                        path.append("BALanding")
+                    }
+            )
+            .navigationDestination(for: String.self) { view in
+                if view == "BALanding" {
+                    BALanding().navigationBarBackButtonHidden(true)
+                }
+            }
         }
     }
 }
